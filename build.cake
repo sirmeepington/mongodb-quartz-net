@@ -43,7 +43,7 @@ Task("Test")
     var settings = new DotNetCoreTestSettings
     {
         Configuration = "Release",
-        Framework = "netcoreapp2.0"
+        Framework = "net6.0"
     };
 
     DotNetCoreTest("./tests/Quartz.Spi.MongoDbJobStore.Tests/Quartz.Spi.MongoDbJobStore.Tests.csproj", settings);
