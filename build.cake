@@ -1,4 +1,4 @@
-#tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
+#tool "nuget:?package=NUnit.ConsoleRunner"
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
@@ -24,42 +24,42 @@ Task("Restore")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    DotNetCoreRestore();
+    DotNetRestore();
 });
 
 Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
 {
-    var settings = new DotNetCoreMSBuildSettings();
+    var settings = new DotNetMSBuildSettings();
     settings.SetConfiguration(configuration);
-    DotNetCoreMSBuild(settings);
+    DotNetMSBuild(settings);
 });
 
 Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    var settings = new DotNetCoreTestSettings
+    var settings = new DotNetTestSettings
     {
         Configuration = "Release",
         Framework = "net6.0"
     };
 
-    DotNetCoreTest("./tests/Quartz.Spi.MongoDbJobStore.Tests/Quartz.Spi.MongoDbJobStore.Tests.csproj", settings);
+    DotNetTest("./tests/Quartz.Spi.MongoDbJobStore.Tests/Quartz.Spi.MongoDbJobStore.Tests.csproj", settings);
 });
 
 Task("Pack")
     .IsDependentOn("Build")
     .Does(() => 
 {
-    var settings = new DotNetCorePackSettings
+    var settings = new DotNetPackSettings
     {
         Configuration = configuration,
         OutputDirectory = "./artifacts/"
     };
 
-    DotNetCorePack("./src/Quartz.Spi.MongoDbJobStore/Quartz.Spi.MongoDbJobStore.csproj", settings);
+    DotNetPack("./src/Quartz.Spi.MongoDbJobStore/Quartz.Spi.MongoDbJobStore.csproj", settings);
 });
 
 Task("AppVeyor")
